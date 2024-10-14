@@ -3,3 +3,5 @@ class CustomApiError extends Error {
     super(message);
   }
 }
+
+module.exports = CustomApiError;
