@@ -1,9 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+
+//IMPORTING MIDDLEWARE
 import connectDb from './db/connect';
 import notFound from './middleware/notFound';
 import errorHandler from './middleware/error-handler';
+import authRouter from './routes/auth-route';
 
 //INTIALISING
 dotenv.config();
@@ -14,6 +17,9 @@ app.use(express.json());
 
 //USING CUSTOM MIDDLEWARE
 app.use(cors());
+
+//SETTING UP ROUTES
+app.use('/api/v1/auth', authRouter);
 
 //UTILISING ERROR MIDDLEWARE
 app.use(notFound);
