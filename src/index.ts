@@ -9,11 +9,11 @@ import errorHandler from './middleware/error-handler';
 import authRouter from './routes/auth-route';
 
 //INTIALISING
-dotenv.config();
 const app = express();
+dotenv.config();
 
-app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 //USING CUSTOM MIDDLEWARE
 app.use(cors());
@@ -22,10 +22,11 @@ app.use(cors());
 app.use('/api/v1/auth', authRouter);
 
 //UTILISING ERROR MIDDLEWARE
-app.use(notFound);
 app.use(errorHandler);
+app.use(notFound);
 
 const PORT = process.env.PORT || 5000;
+
 const start = async () => {
   await connectDb(process.env.MONGO_URI);
   app.listen(PORT, () => {

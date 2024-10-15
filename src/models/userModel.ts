@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: [true, 'Please provide a username'],
-    unique: [true, 'Username already exists'],
   },
   email: {
     type: String,
@@ -16,6 +15,10 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-const userModel = mongoose.model('users', UserSchema);
+UserSchema.methods.createJWT = function (payload) {
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' });
+  return token;
+};
 
+const userModel = mongoose.model('users', UserSchema);
 export default userModel;

@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import expressAsyncHandler from 'express-async-handler';
 import { StatusCodes } from 'http-status-codes';
 
 const notFound = (req: Request, res: Response) => {

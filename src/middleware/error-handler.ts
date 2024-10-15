@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-const errorHandler = (err, res: Response) => {
-  const customError = {
+const errorHandler = (err, req, res, next) => {
+  let customError = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     message:
       err.message || "Something went terribly wrong, we'll fix it in bit",
@@ -30,7 +30,7 @@ const errorHandler = (err, res: Response) => {
     customError.statusCode = 400;
   }
 
-  res
+  return res
     .status(customError.statusCode)
     .json({ success: false, msg: customError.message });
 };
