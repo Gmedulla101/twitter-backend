@@ -32,4 +32,4 @@ const like = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   res.status(StatusCodes.OK).json({ success: true, msg: 'Like sent' });
 });
 
-export { createPost };
+export { createPost, getPost, getPosts, updatePost, deletePost, comment, like };
