@@ -11,6 +11,7 @@ import connectDB from './connectDB/connectDB';
 
 //IMPORTING ROUTES
 import authRouter from './routes/auth-route';
+import postRouter from './routes/post-route';
 
 //INITALISING APP
 const app = express();
@@ -23,6 +24,7 @@ app.use(cors());
 
 //ROUTES
 app.use('/api/v1/auth', authRouter);
+app.subscribe('/api/v1/posts', postRouter);
 
 app.use(notFound);
 app.use(errorHandler);
