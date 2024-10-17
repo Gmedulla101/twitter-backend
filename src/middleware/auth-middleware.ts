@@ -2,8 +2,8 @@ import UnauthenticatedError from '../errors/unAuth';
 import jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-interface ModifiedRequest extends Request {
-  user: {
+export interface ModifiedRequest extends Request {
+  user?: {
     username: string;
     email: string;
     userId: string;
