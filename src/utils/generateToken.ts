@@ -1,6 +1,11 @@
 import jwt from 'jsonwebtoken';
 
-const generateToken = (id: string) => {
+type TokenVariables = {
+  id: string;
+  username: string;
+};
+
+const generateToken = ({ id, username }: TokenVariables) => {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET is undefined');
   }

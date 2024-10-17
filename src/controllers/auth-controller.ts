@@ -9,10 +9,13 @@ import bcrypt from 'bcryptjs';
 import generateToken from '../utils/generateToken';
 
 const register = asyncHandler(async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, firstName, lastName, otherNames } =
+    req.body;
+
+  console.log(req.body);
 
   if (!username || !email || !password) {
-    throw new BadRequestError('Please enter complete sing up details');
+    throw new BadRequestError('Please enter complete sign up details');
   }
 
   //CHECKING IF USER ALREADY EXISTS
@@ -31,11 +34,20 @@ const register = asyncHandler(async (req: Request, res: Response) => {
     username,
     email,
     password: hashedPassword,
+    firstName,
+    lastName,
+    otherNames,
   });
 
-  const newToken = generateToken(newUser._id.toString());
+  const tokenVar = {
+    id: String(newUser._id),
+    username: newUser.username,
+  };
+  const newToken = generateToken(tokenVar);
 
-  res.status(StatusCodes.OK).json({ success: true, token: newToken });
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, data: newToken, username: newUser.username });
 });
 
 const login = asyncHandler(async (req: Request, res: Response) => {
@@ -50,9 +62,15 @@ const login = asyncHandler(async (req: Request, res: Response) => {
     throw new UnauthenticatedError('The requested user does not exist');
   }
 
-  const token = generateToken(user._id.toString());
+  const tokenVar = {
+    id: String(user._id),
+    username: user.username,
+  };
+  const token = generateToken(tokenVar);
 
-  res.status(StatusCodes.OK).json({ success: true, token: token });
+  res
+    .status(StatusCodes.OK)
+    .json({ success: true, token: token, username: user.username });
 });
 
 export { login, register };
