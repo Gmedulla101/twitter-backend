@@ -3,8 +3,19 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import { ModifiedRequest } from '../middleware/auth-middleware';
 import { StatusCodes } from 'http-status-codes';
+import { UnauthenticatedError } from '../errors';
 
 const createPost = asyncHandler(async (req: ModifiedRequest, res: Response) => {
+  console.log(req.user);
+  if (!req?.user?.userId) {
+    throw new UnauthenticatedError('Please log in to make a post');
+  }
+
+  const newPost = await postModel.create({
+    ...req.body,
+    createdBy: req.user.userId,
+  });
+  console.log(newPost);
   res.status(StatusCodes.OK).json({ success: true, msg: 'Post created' });
 });
 
