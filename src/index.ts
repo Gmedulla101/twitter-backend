@@ -24,10 +24,10 @@ app.use(cors());
 
 //ROUTES
 app.use('/api/v1/auth', authRouter);
-app.subscribe('/api/v1/posts', postRouter);
+app.use('/api/v1/posts', postRouter);
 
-app.use(notFound);
 app.use(errorHandler);
+app.use(notFound);
 
 const PORT = process.env.PORT || 5000;
 

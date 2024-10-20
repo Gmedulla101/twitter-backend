@@ -5,11 +5,11 @@ const postSchema = new mongoose.Schema(
     post: {
       type: String,
     },
-    postImg: {
-      type: [String],
-    },
     poster: {
       type: String,
+    },
+    postImg: {
+      type: [String],
     },
     likes: {
       type: Number,
@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema(
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: 'users',
-      required: [true, 'Please provide user token'],
+      required: [true, 'You must be logged in to make a post'],
     },
   },
   { timestamps: true }

@@ -1,16 +1,18 @@
 import jwt from 'jsonwebtoken';
 
 type TokenVariables = {
-  id: string;
+  userId: string;
   username: string;
 };
 
-const generateToken = ({ id, username }: TokenVariables) => {
+const generateToken = ({ userId, username }: TokenVariables) => {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET is undefined');
   }
 
-  const token = jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+  const token = jwt.sign({ userId, username }, process.env.JWT_SECRET, {
+    expiresIn: '30d',
+  });
   return token;
 };
 

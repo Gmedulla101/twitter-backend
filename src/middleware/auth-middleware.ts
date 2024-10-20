@@ -1,17 +1,16 @@
 import UnauthenticatedError from '../errors/unAuth';
 import jwt from 'jsonwebtoken';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 export interface ModifiedRequest extends Request {
   user?: {
     username: string;
-    email: string;
     userId: string;
   };
 }
 
-const auth = (req: ModifiedRequest, res: Response) => {
-  const authHeader: string | undefined = req.headers.authorization;
+const auth = (req: ModifiedRequest, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer')) {
     throw new UnauthenticatedError('Authetication invalid');
@@ -23,13 +22,13 @@ const auth = (req: ModifiedRequest, res: Response) => {
       throw new Error('No JWT_SECRET is present');
     }
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    const { username, email, userId }: any = payload;
+    const { username, userId }: any = payload;
 
     req.user = {
       username,
-      email,
       userId,
     };
+    next();
   } catch (err) {
     console.log(err);
   }

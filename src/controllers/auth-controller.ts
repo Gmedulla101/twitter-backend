@@ -40,7 +40,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
   });
 
   const tokenVar = {
-    id: String(newUser._id),
+    userId: String(newUser._id),
     username: newUser.username,
   };
   const newToken = generateToken(tokenVar);
@@ -63,7 +63,7 @@ const login = asyncHandler(async (req: Request, res: Response) => {
   }
 
   const tokenVar = {
-    id: String(user._id),
+    userId: String(user._id),
     username: user.username,
   };
   const token = generateToken(tokenVar);
