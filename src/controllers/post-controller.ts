@@ -26,7 +26,9 @@ const getPosts = asyncHandler(async (req: ModifiedRequest, res: Response) => {
 
 const getUserPosts = asyncHandler(
   async (req: ModifiedRequest, res: Response) => {
-    const data = await postModel.find({}).sort({ createdAt: -1 });
+    const data = await postModel
+      .find({ createdBy: req.user?.userId })
+      .sort({ createdAt: -1 });
     res.status(StatusCodes.OK).json({ success: true, data });
   }
 );

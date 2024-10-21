@@ -18,7 +18,7 @@ postRouter.post('/create-post', auth, createPost);
 postRouter.patch('/update-post', auth, updatePost);
 postRouter.delete('/delete-post', auth, deletePost);
 postRouter.get('/get-posts', getPosts);
-postRouter.get('/get-user-posts', getUserPosts);
+postRouter.get('/get-user-posts', auth, getUserPosts);
 postRouter.get('/get-post', getPost);
 postRouter.post('/like', like);
 postRouter.post('/comment', comment);
