@@ -12,6 +12,7 @@ postRouter.post('/create-post', auth_middleware_1.default, post_controller_1.cre
 postRouter.patch('/update-post', auth_middleware_1.default, post_controller_1.updatePost);
 postRouter.delete('/delete-post', auth_middleware_1.default, post_controller_1.deletePost);
 postRouter.get('/get-posts', post_controller_1.getPosts);
+postRouter.get('/get-user-posts', auth_middleware_1.default, post_controller_1.getUserPosts);
 postRouter.get('/get-post', post_controller_1.getPost);
 postRouter.post('/like', post_controller_1.like);
 postRouter.post('/comment', post_controller_1.comment);

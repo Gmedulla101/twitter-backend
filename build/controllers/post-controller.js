@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.like = exports.comment = exports.deletePost = exports.updatePost = exports.getPosts = exports.getPost = exports.createPost = void 0;
+exports.like = exports.comment = exports.deletePost = exports.updatePost = exports.getPosts = exports.getUserPosts = exports.getPost = exports.createPost = void 0;
 const post_model_1 = __importDefault(require("../models/post-model"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const http_status_codes_1 = require("http-status-codes");
@@ -24,14 +24,22 @@ const createPost = (0, express_async_handler_1.default)((req, res) => __awaiter(
         throw new errors_1.UnauthenticatedError('Please log in to make a post');
     }
     const newPost = yield post_model_1.default.create(Object.assign(Object.assign({}, req.body), { createdBy: req.user.userId }));
-    console.log(newPost);
     res.status(http_status_codes_1.StatusCodes.OK).json({ success: true, msg: 'Post created' });
 }));
 exports.createPost = createPost;
 const getPosts = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.status(http_status_codes_1.StatusCodes.OK).json({ success: true, msg: 'Posts retrieved' });
+    const data = yield post_model_1.default.find({}).sort({ createdAt: -1 });
+    res.status(http_status_codes_1.StatusCodes.OK).json({ success: true, data });
 }));
 exports.getPosts = getPosts;
+const getUserPosts = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const data = yield post_model_1.default
+        .find({ createdBy: (_a = req.user) === null || _a === void 0 ? void 0 : _a.userId })
+        .sort({ createdAt: -1 });
+    res.status(http_status_codes_1.StatusCodes.OK).json({ success: true, data });
+}));
+exports.getUserPosts = getUserPosts;
 const getPost = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.status(http_status_codes_1.StatusCodes.OK).json({ success: true, msg: 'Post retrieved' });
 }));
