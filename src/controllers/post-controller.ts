@@ -15,13 +15,21 @@ const createPost = asyncHandler(async (req: ModifiedRequest, res: Response) => {
     ...req.body,
     createdBy: req.user.userId,
   });
-  console.log(newPost);
+
   res.status(StatusCodes.OK).json({ success: true, msg: 'Post created' });
 });
 
 const getPosts = asyncHandler(async (req: ModifiedRequest, res: Response) => {
-  res.status(StatusCodes.OK).json({ success: true, msg: 'Posts retrieved' });
+  const data = await postModel.find({}).sort({ createdAt: -1 });
+  res.status(StatusCodes.OK).json({ success: true, data });
 });
+
+const getUserPosts = asyncHandler(
+  async (req: ModifiedRequest, res: Response) => {
+    const data = await postModel.find({}).sort({ createdAt: -1 });
+    res.status(StatusCodes.OK).json({ success: true, data });
+  }
+);
 
 const getPost = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   res.status(StatusCodes.OK).json({ success: true, msg: 'Post retrieved' });
@@ -43,4 +51,13 @@ const like = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   res.status(StatusCodes.OK).json({ success: true, msg: 'Like sent' });
 });
 
-export { createPost, getPost, getPosts, updatePost, deletePost, comment, like };
+export {
+  createPost,
+  getPost,
+  getUserPosts,
+  getPosts,
+  updatePost,
+  deletePost,
+  comment,
+  like,
+};
