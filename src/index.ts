@@ -32,6 +32,9 @@ app.use(notFound);
 const PORT = process.env.PORT || 5000;
 
 const start = async () => {
+  if (!process.env.MONGO_URI) {
+    throw new Error('No database connection string');
+  }
   await connectDB(process.env.MONGO_URI);
   app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}...`);

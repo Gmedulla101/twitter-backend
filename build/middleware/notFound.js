@@ -4,6 +4,6 @@ const http_status_codes_1 = require("http-status-codes");
 const notFound = (req, res) => {
     res
         .status(http_status_codes_1.StatusCodes.NOT_FOUND)
-        .json({ success: false, msg: 'The requested route does not exist' });
+        .json({ success: false, msg: 'The requested route was not found' });
 };
 exports.default = notFound;
