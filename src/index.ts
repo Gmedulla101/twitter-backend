@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import http from 'http';
+import { Server } from 'socket.io';
 
 //IMPORTING ERRORS
 import notFound from './middleware/notFound';
@@ -16,6 +18,25 @@ import postRouter from './routes/post-route';
 //INITALISING APP
 const app = express();
 dotenv.config();
+
+//INSTANTIATING SOCKET
+const appServer = http.createServer(app);
+const io = new Server(appServer, {
+  cors: {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST'],
+  },
+});
+io.on('connection', (socket) => {
+  console.log(socket.id);
+
+  socket.on('disconnect', () => {
+    console.log('Disconnected');
+  });
+});
+
+
+
 
 //UTILISING MIDLEWARE
 app.use(express.urlencoded({ extended: false }));
@@ -36,7 +57,7 @@ const start = async () => {
     throw new Error('No database connection string');
   }
   await connectDB(process.env.MONGO_URI);
-  app.listen(PORT, () => {
+  appServer.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}...`);
   });
 };
