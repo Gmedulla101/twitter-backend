@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Your account needs a username'],
     unique: [true, 'Username already exists'],
   },
+  profilePic: {
+    type: String,
+  },
   email: {
     type: String,
     required: [true, 'Please input your email'],
