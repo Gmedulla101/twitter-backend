@@ -14,6 +14,7 @@ import connectDB from './connectDB/connectDB';
 //IMPORTING ROUTES
 import authRouter from './routes/auth-route';
 import postRouter from './routes/post-route';
+import userRouter from './routes/user-route';
 
 //INITALISING APP
 const app = express();
@@ -35,9 +36,6 @@ io.on('connection', (socket) => {
   });
 });
 
-
-
-
 //UTILISING MIDLEWARE
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -46,6 +44,7 @@ app.use(cors());
 //ROUTES
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/posts', postRouter);
+app.use('/api/v1/users', userRouter);
 
 app.use(errorHandler);
 app.use(notFound);
