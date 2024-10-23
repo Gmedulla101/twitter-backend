@@ -47,7 +47,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 
   res
     .status(StatusCodes.OK)
-    .json({ success: true, data: newToken, username: newUser.username });
+    .json({ success: true, token: newToken, username: newUser.username });
 });
 
 const login = asyncHandler(async (req: Request, res: Response) => {
