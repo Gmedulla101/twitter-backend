@@ -6,7 +6,13 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Your account needs a username'],
     unique: [true, 'Username already exists'],
   },
-  profilePic: {
+  profileImage: {
+    type: String,
+  },
+  coverImage: {
+    type: String,
+  },
+  bio: {
     type: String,
   },
   email: {
@@ -21,6 +27,12 @@ const userSchema = new mongoose.Schema({
   },
   otherNames: {
     type: String,
+  },
+  followers: {
+    type: [String],
+  },
+  following: {
+    type: [String],
   },
   password: {
     type: String,
