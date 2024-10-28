@@ -28,9 +28,21 @@ const io = new Server(appServer, {
     methods: ['GET', 'POST'],
   },
 });
-io.on('connection', (socket) => {
-  console.log(socket.id);
 
+io.on('connection', (socket) => {
+  //FUNCTIONALITY TO CREATE AND JOIN ROOM
+  socket.on('join_room', (data) => {
+    socket.join(data);
+    console.log(`User with ID ${socket.id} has joined room ${data}`);
+  });
+
+  //FUNCTIONALITY TO SEND MESSAGE
+  socket.on('send_message', (data) => {
+    console.log(data);
+    socket.to(data.room).emit('receive_message', data);
+  });
+
+  //DISCONNECTION
   socket.on('disconnect', () => {
     console.log('Disconnected');
   });

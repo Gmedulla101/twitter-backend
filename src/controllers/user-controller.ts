@@ -8,8 +8,8 @@ import { BadRequestError } from '../errors';
 const getUsers = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   const { user } = req.query;
 
-  if (user) {
-    return;
+  if (!user) {
+    throw new BadRequestError('There was no specified user');
   }
 
   //GET ALL USERS
