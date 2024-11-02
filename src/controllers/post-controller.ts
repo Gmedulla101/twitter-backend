@@ -20,6 +20,8 @@ const createPost = asyncHandler(async (req: ModifiedRequest, res: Response) => {
 });
 
 const getPosts = asyncHandler(async (req: ModifiedRequest, res: Response) => {
+  console.log(req.params);
+
   const data = await postModel.find({}).sort({ createdAt: -1 });
   res.status(StatusCodes.OK).json({ success: true, data });
 });

@@ -12,8 +12,6 @@ const register = asyncHandler(async (req: Request, res: Response) => {
   const { username, email, password, firstName, lastName, otherNames } =
     req.body;
 
-  console.log(req.body);
-
   if (!username || !email || !password) {
     throw new BadRequestError('Please enter complete sign up details');
   }
