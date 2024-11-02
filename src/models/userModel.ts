@@ -42,11 +42,11 @@ const userSchema = new mongoose.Schema({
   },
 
   followers: {
-    type: [String],
+    type: [mongoose.Schema.Types.ObjectId],
   },
 
   following: {
-    type: [String],
+    type: [mongoose.Schema.Types.ObjectId],
   },
 
   password: {

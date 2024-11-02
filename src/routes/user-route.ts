@@ -5,12 +5,13 @@ import {
   followUser,
   unFollowUser,
 } from '../controllers/user-controller';
+import auth from '../middleware/auth-middleware';
 
 const userRouter = Router();
 
 userRouter.get('/getUsers', getUsers);
 userRouter.get('/getUser/:username', getUser);
-userRouter.patch('/followUser/:id', followUser);
-userRouter.patch('/getUsers/:id', unFollowUser);
+userRouter.patch('/followUser/:username', auth, followUser);
+userRouter.patch('/getUsers/:username', auth, unFollowUser);
 
 export default userRouter;

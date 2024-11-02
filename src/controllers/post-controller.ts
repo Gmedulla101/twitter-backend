@@ -20,9 +20,15 @@ const createPost = asyncHandler(async (req: ModifiedRequest, res: Response) => {
 });
 
 const getPosts = asyncHandler(async (req: ModifiedRequest, res: Response) => {
-  console.log(req.params);
+  const { poster } = req.query;
 
-  const data = await postModel.find({}).sort({ createdAt: -1 });
+  let queryObject: any = {};
+
+  if (poster) {
+    queryObject.poster = poster;
+  }
+
+  const data = await postModel.find(queryObject).sort({ createdAt: -1 });
   res.status(StatusCodes.OK).json({ success: true, data });
 });
 
