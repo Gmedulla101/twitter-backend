@@ -1,11 +1,12 @@
 import UnauthenticatedError from '../errors/unAuth';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
 
 export interface ModifiedRequest extends Request {
   user?: {
     username: string;
-    userId: string;
+    userId: Types.ObjectId;
   };
 }
 

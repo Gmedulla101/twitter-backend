@@ -4,16 +4,21 @@ import asyncHandler from 'express-async-handler';
 import { Response } from 'express';
 import { ModifiedRequest } from '../middleware/auth-middleware';
 import { BadRequestError, UnauthenticatedError } from '../errors';
+import { Types } from 'mongoose';
 
+//GET USERS FUNCTION
 const getUsers = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   const { user } = req.query;
+  const loggedInUserId = req.user?.userId;
 
   if (!user) {
     throw new BadRequestError('There was no specified user');
   }
 
   //GET ALL USERS
-  const users = await userModel.find({});
+  const users = await userModel
+    .find({ _id: { $ne: loggedInUserId } })
+    .select('-password');
 
   //FILTER OUT REQUIRED USER
   const validUsers = users.filter((user) => {
@@ -26,6 +31,7 @@ const getUsers = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   res.status(StatusCodes.OK).json({ success: true, data: validUsers });
 });
 
+//GET USER BASED ON USERNAME
 const getUser = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   const { username } = req.params;
   if (!username) {
@@ -44,9 +50,10 @@ const getUser = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   res.status(StatusCodes.OK).json({ success: true, data: user });
 });
 
+//FOLLOW USER FUNCTION
 const followUser = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   const { username } = req.params;
-  const userId: any = req.user?.userId;
+  const userId: Types.ObjectId | undefined = req.user?.userId;
 
   if (!userId) {
     throw new UnauthenticatedError(
@@ -65,11 +72,10 @@ const followUser = asyncHandler(async (req: ModifiedRequest, res: Response) => {
     throw new BadRequestError("You don't exist lol");
   }
 
-  userToBeFollowed.followers.map((follower, i) => {
-    if (follower === userId) {
-      throw new BadRequestError('You already follow this user');
-    }
-  });
+  //CHECKING TO SEE IF THE LOGGED IN USER ALREADY FOLLOWS THE USER TO BE FOLOWED
+  if (userToBeFollowed.followers.includes(userId)) {
+    throw new BadRequestError('You already follow this user');
+  }
 
   userToBeFollowed.followers.push(userId);
   followingUser.following.push(userToBeFollowed._id);
@@ -81,6 +87,7 @@ const followUser = asyncHandler(async (req: ModifiedRequest, res: Response) => {
     .json({ success: true, data: 'Followed', followedUser: userToBeFollowed });
 });
 
+//UNFOLLOW USER FUNCTION
 const unFollowUser = asyncHandler(
   async (req: ModifiedRequest, res: Response) => {
     res.status(StatusCodes.OK).json({ success: true, data: 'Unfollowed' });

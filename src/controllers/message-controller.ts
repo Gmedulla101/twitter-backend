@@ -53,7 +53,7 @@ const getMessages = asyncHandler(
       );
     }
 
-    res.status(StatusCodes.OK).json({ success: true, data: convo });
+    res.status(StatusCodes.OK).json({ success: true, data: convo.messages });
   }
 );
 

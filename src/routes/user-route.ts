@@ -9,7 +9,7 @@ import auth from '../middleware/auth-middleware';
 
 const userRouter = Router();
 
-userRouter.get('/getUsers', getUsers);
+userRouter.get('/getUsers', auth, getUsers);
 userRouter.get('/getUser/:username', getUser);
 userRouter.patch('/followUser/:username', auth, followUser);
 userRouter.patch('/getUsers/:username', auth, unFollowUser);

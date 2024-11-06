@@ -45,7 +45,12 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 
   res
     .status(StatusCodes.OK)
-    .json({ success: true, token: newToken, username: newUser.username });
+    .json({
+      success: true,
+      token: newToken,
+      username: newUser.username,
+      id: newUser._id,
+    });
 });
 
 const login = asyncHandler(async (req: Request, res: Response) => {
@@ -68,7 +73,12 @@ const login = asyncHandler(async (req: Request, res: Response) => {
 
   res
     .status(StatusCodes.OK)
-    .json({ success: true, token: token, username: user.username });
+    .json({
+      success: true,
+      token: token,
+      username: user.username,
+      id: user._id,
+    });
 });
 
 export { login, register };
