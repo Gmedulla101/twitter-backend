@@ -12,6 +12,6 @@ const userRouter = Router();
 userRouter.get('/getUsers', auth, getUsers);
 userRouter.get('/getUser/:username', getUser);
 userRouter.patch('/followUser/:username', auth, followUser);
-userRouter.patch('/getUsers/:username', auth, unFollowUser);
+userRouter.patch('/unfollowUser/:username', auth, unFollowUser);
 
 export default userRouter;
