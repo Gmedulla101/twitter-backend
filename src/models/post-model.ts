@@ -15,7 +15,12 @@ const postSchema = new mongoose.Schema(
       type: Number,
     },
     comments: {
-      type: Array,
+      type: [
+        {
+          commenter: { type: String },
+          comment: { type: String },
+        },
+      ],
     },
 
     createdBy: {
