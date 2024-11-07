@@ -20,7 +20,7 @@ postRouter.delete('/delete-post', auth, deletePost);
 postRouter.get('/get-posts', getPosts);
 postRouter.get('/get-user-posts', auth, getUserPosts);
 postRouter.get('/get-post/:id', getPost);
-postRouter.post('/like', like);
+postRouter.patch('/like/:id', like);
 postRouter.post('/comment/:id', auth, comment);
 
 export default postRouter;

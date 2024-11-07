@@ -13,6 +13,10 @@ const postSchema = new mongoose.Schema(
     },
     likes: {
       type: Number,
+      default: 0,
+    },
+    likers: {
+      type: [mongoose.Types.ObjectId],
     },
     comments: {
       type: [

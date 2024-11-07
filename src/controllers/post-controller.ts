@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import { ModifiedRequest } from '../middleware/auth-middleware';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, UnauthenticatedError } from '../errors';
+import { Types } from 'mongoose';
 
 const createPost = asyncHandler(async (req: ModifiedRequest, res: Response) => {
   console.log(req.user);
@@ -83,7 +84,24 @@ const comment = asyncHandler(async (req: ModifiedRequest, res: Response) => {
 });
 
 const like = asyncHandler(async (req: ModifiedRequest, res: Response) => {
-  res.status(StatusCodes.OK).json({ success: true, msg: 'Like sent' });
+  const { id: postId } = req.params;
+  const likedUser: any = req.query.likedUser;
+
+  const particularPost = await postModel.findOne({ _id: postId });
+
+  if (!particularPost) {
+    throw new BadRequestError('This post no longer exists');
+  }
+
+  if (particularPost.likers.includes(likedUser)) {
+    throw new BadRequestError('You have already liked this post');
+  }
+
+  particularPost.likes = particularPost?.likes + 1;
+  particularPost.likers.unshift(likedUser);
+  particularPost.save();
+
+  res.status(StatusCodes.OK).json({ success: true, data: particularPost });
 });
 
 export {
