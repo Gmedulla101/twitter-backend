@@ -4,7 +4,7 @@ import asyncHandler from 'express-async-handler';
 import { ModifiedRequest } from '../middleware/auth-middleware';
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError } from '../errors';
+import { BadRequestError, NotFoundError } from '../errors';
 
 const sendMessage = asyncHandler(
   async (req: ModifiedRequest, res: Response) => {
@@ -48,9 +48,7 @@ const getMessages = asyncHandler(
       .populate('messages');
 
     if (!convo) {
-      throw new BadRequestError(
-        'You have no conversation with this individual'
-      );
+      throw new NotFoundError('You have no conversation with this individual');
     }
 
     res.status(StatusCodes.OK).json({ success: true, data: convo.messages });
