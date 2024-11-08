@@ -1,8 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import http from 'http';
-import { Server } from 'socket.io';
+import { app, server } from './socket/socket';
 
 //IMPORTING ERRORS
 import notFound from './middleware/notFound';
@@ -19,36 +18,8 @@ import messageRouter from './routes/message-route';
 import convoRouter from './routes/convo-route';
 
 //INITALISING APP
-const app = express();
+
 dotenv.config();
-
-//INSTANTIATING SOCKET
-const appServer = http.createServer(app);
-const io = new Server(appServer, {
-  cors: {
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
-  },
-});
-
-io.on('connection', (socket) => {
-  //FUNCTIONALITY TO CREATE AND JOIN ROOM
-  socket.on('join_room', (data) => {
-    socket.join(data);
-    console.log(`User with ID ${socket.id} has joined room ${data}`);
-  });
-
-  //FUNCTIONALITY TO SEND MESSAGE
-  socket.on('send_message', (data) => {
-    console.log(data);
-    socket.to(data.room).emit('receive_message', data);
-  });
-
-  //DISCONNECTION
-  socket.on('disconnect', () => {
-    console.log('Disconnected');
-  });
-});
 
 //UTILISING MIDLEWARE
 app.use(express.urlencoded({ extended: false }));
@@ -72,7 +43,7 @@ const start = async () => {
     throw new Error('No database connection string');
   }
   await connectDB(process.env.MONGO_URI);
-  appServer.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}...`);
   });
 };
