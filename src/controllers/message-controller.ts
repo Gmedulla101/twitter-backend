@@ -5,6 +5,7 @@ import { ModifiedRequest } from '../middleware/auth-middleware';
 import { Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError, NotFoundError } from '../errors';
+import { getRecieverSocketId, io } from '../socket/socket';
 
 const sendMessage = asyncHandler(
   async (req: ModifiedRequest, res: Response) => {
@@ -33,6 +34,11 @@ const sendMessage = asyncHandler(
     }
 
     await convo?.save();
+
+    //SOCKET IO FUNCTIONALITY
+    const recieverSocketId = getRecieverSocketId(receiverUsername);
+
+    io.to(recieverSocketId).emit('newMessage', newMessage);
 
     res.status(StatusCodes.OK).json({ success: true, msg: newMessage });
   }
